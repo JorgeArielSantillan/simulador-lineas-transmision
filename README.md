@@ -87,7 +87,7 @@ HTML, CSS y JavaScript (módulos ES, Canvas 2D, MediaRecorder), sin frameworks. 
 
 El código fuente es privado. **Está disponible a pedido para procesos de selección.** Escribinos y lo mostramos con gusto.
 
-Contacto: [TU EMAIL] · [TU LINKEDIN]
+Contacto: georgesantillan1617@gmail.com ·
 
 ---
 
