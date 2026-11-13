@@ -89,6 +89,24 @@ El código fuente es privado. **Está disponible a pedido para procesos de selec
 
 Contacto: georgesantillan1617@gmail.com ·
 
+## 📜 Licencia
+
+[![CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es)
+
+El **contenido educativo** del simulador (textos, figuras propias y uso como material
+didáctico) se distribuye bajo
+[Creative Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es):
+podés usarlo y adaptarlo en clases citando a los autores, sin fines comerciales y
+compartiendo las adaptaciones con la misma licencia.
+
+El **código fuente** no está incluido en esa licencia (todos los derechos reservados).
+Detalles en [`LICENSE`](LICENSE).
+
+**Cómo citar:**
+> Santillán, J. A. y Cutraro, A. G. (2026). *Simulador de Líneas de Transmisión* [Aplicación web].
+> https://simulador-lineas.vercel.app
+
+
 ---
 
 <a id="english"></a>
@@ -112,4 +130,6 @@ It is available in Spanish and English and needs no server.
 
 **Source code** is private and available on request for hiring processes.
 
-**Authors:** Jorge Ariel Santillán and Ayelén Gisela Cutraro. © 2026, all rights reserved.
+**Authors:** Jorge Ariel Santillán and Ayelén Gisela Cutraro. © 2026.
+
+**License:** educational content under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) (attribution, non-commercial, share-alike). Source code: all rights reserved. See [`LICENSE`](LICENSE).
