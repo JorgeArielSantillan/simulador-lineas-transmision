@@ -91,7 +91,7 @@ flowchart LR
 - **FDTD:** la línea se discretiza en una grilla de Yee 1D (tensión en los nodos, corriente a media celda, salto de rana) con paso Δt = Δx/v. En x = 0 hay un generador de Thevenin y en x = ℓ una carga concentrada R, R-L o R-C, integrada con la regla trapezoidal.
 - **Analítica:** solución exacta de línea larga en el dominio de Laplace, con todas las reflexiones múltiples. Para la senoidal se resuelve con fasores; para pulsos y ondas cuadradas se vuelve al tiempo con una **transformada de Laplace numérica** (s = σ + jω y FFT).
 - **Onda incidente y reflejada:** en senoidal se separan con la solución exacta, V(x) = A·e^(−γx) + A·Γ_L·e^(−γ(2ℓ−x)), con Zc complejo. En pulsos y ondas cuadradas se usa v± = (v ± Z₀·i)/2 sobre la grilla del FDTD, con la corriente promediada al mismo instante que la tensión.
-- **Resistencia variable con la frecuencia:** con efecto pelicular, la impedancia serie es R·√(1 + jf/f_c). Se aproxima con 16 ramas R∥L pasivas (error < 0,04 % hasta 10 MHz) que el FDTD integra con la regla trapezoidal; la solución exacta usa el mismo modelo, así que la comparación sigue siendo exacta.
+- **Resistencia variable con la frecuencia:** con efecto pelicular, la parte resistiva crece como √(1 + jf/f_c). Como R, L, G y C son los datos de la línea a 50/60 Hz, el modelo se calibra en esa frecuencia: ahí R y L valen exactamente lo ingresado y el régimen permanente da lo mismo que con R constante; solo cambian los transitorios rápidos. Se aproxima con 16 ramas R∥L pasivas (error < 0,04 % hasta 10 MHz) que el FDTD integra con la regla trapezoidal; la solución exacta usa el mismo modelo.
 - **Rayo:** el FDTD agrega la corriente del rayo y la conductancia del canal en la ecuación del nodo de impacto. La solución exacta trata el rayo como una fuente de corriente en x₀ que ve Z_izq ∥ Z_der ∥ Z_canal, con las reflexiones en los dos extremos, y vuelve al tiempo con la misma Laplace numérica.
 - **α y β desde la simulación:** la línea se carga con su propia Zc y se ajusta V(x) = A·e^(−γx) + B·e^(+γx) con Levenberg-Marquardt. En banda ancha, un pulso registrado en dos puntos da H(f) = e^(−γΔx).
 
@@ -115,6 +115,7 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Rayo con canal de 1000 Ω: V = I·(Z₀/2 ∥ Z_canal) | 1171,8 kV | 1171,8 kV |
 | Rayo: FDTD contra la solución exacta | — | error L2 < 0,2 % |
 | R(f): FDTD contra la solución exacta (pulso, cuadrada, rayo) | — | error L2 < 0,6 % |
+| R(f): caso de 400 km a 50 Hz, igual que con R constante | 479,27 kV · 13,58° · 11,71 MW | idéntico |
 | α y β a 50 y 60 Hz | — | error < 0,01 % |
 | α(f) y β(f) de 10 Hz a 170 kHz | — | error mediano < 0,001 % |
 
