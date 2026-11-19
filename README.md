@@ -27,7 +27,7 @@ Una página web gratuita, pensada como material didáctico, donde cualquiera pue
 - **separar la onda incidente y la reflejada**, de tensión y de corriente: en la animación, en el perfil |V(x)| y en las formas de onda de los extremos se ve qué parte viaja hacia la carga y qué parte vuelve hacia la fuente, juntas, cada una sola o junto con la total;
 - **obtener los resultados de régimen:** tabla por fase y trifásica, pérdidas, rendimiento, regulación, efecto Ferranti y comparación con la potencia natural (SIL);
 - **medir α y β** sobre la simulación y compararlos con la teoría;
-- **exportar** la animación en video y las formas de onda en CSV.
+- **exportar** en video la animación a lo largo de la línea y la de los últimos 2 ciclos en los extremos, y las formas de onda en CSV.
 
 Funciona en la computadora y en el celular, en **español e inglés**, y **sin servidor**: todo se calcula en el navegador de cada usuario.
 
@@ -58,6 +58,10 @@ La corriente también se separa: i⁺ = v⁺/Zc e i⁻ = −v⁻/Zc. En la carga
 Las formas de onda en los extremos tienen el mismo selector: tensión incidente y reflejada en el envío (punteada) y en la carga (llena), y corriente incidente y reflejada en la carga. Acá se ve el pulso ir y volver varias veces, invirtiéndose en la fuente (Rs = 0):
 
 ![Formas de onda en los extremos: incidente y reflejada](docs/extremos-ondas.png)
+
+Con **Animar últimos 2 ciclos**, las formas de onda de régimen se dibujan de a poco con un cursor de tiempo, con las mismas opciones de **Ver**, y se pueden **exportar como video**:
+
+![Animación de los últimos 2 ciclos: tensión y corriente incidente y reflejada](docs/ultimos-2-ciclos.gif)
 
 ## Cómo funciona
 
