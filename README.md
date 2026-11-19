@@ -55,7 +55,7 @@ La corriente también se separa: i⁺ = v⁺/Zc e i⁻ = −v⁻/Zc. En la carga
 
 ![Tensión y corriente: total, incidente y reflejada](docs/corriente-ondas.png)
 
-Las formas de onda en los extremos tienen el mismo selector: tensión incidente y reflejada en el envío (punteada) y en la carga (llena), y corriente incidente y reflejada en la carga. Acá se ve el pulso ir y volver varias veces, invirtiéndose en la fuente (Rs = 0):
+Las formas de onda en los extremos tienen el mismo selector: tensión y corriente, total, incidente y reflejada, en el envío (punteada) y en la carga (llena). La corriente que entrega la fuente se obtiene del FDTD con el balance de la media celda del extremo, y coincide con el fasor (691,47 A contra 691,5 A en el ejemplo de clase). Acá se ve el pulso ir y volver varias veces, invirtiéndose en la fuente (Rs = 0):
 
 ![Formas de onda en los extremos: incidente y reflejada](docs/extremos-ondas.png)
 
