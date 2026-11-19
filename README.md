@@ -24,7 +24,7 @@ Una página web gratuita, pensada como material didáctico, donde cualquiera pue
 - **definir la carga:** por MVA y factor de potencia, por impedancia, o en circuito abierto, cortocircuito o adaptada;
 - **elegir la fuente:** senoidal a 50 o 60 Hz, con la tensión fijada en el envío o en la carga, onda cuadrada o pulso;
 - **ver la onda viajar y reflejarse** a lo largo de la línea, en tiempo real, con la solución analítica superpuesta;
-- **separar la onda incidente y la reflejada:** en la animación y en el perfil |V(x)| se ve qué parte de la tensión viaja hacia la carga y qué parte vuelve hacia la fuente;
+- **separar la onda incidente y la reflejada:** en la animación y en el perfil |V(x)| se ve qué parte de la tensión viaja hacia la carga y qué parte vuelve hacia la fuente, juntas, cada una sola o junto con la total;
 - **obtener los resultados de régimen:** tabla por fase y trifásica, pérdidas, rendimiento, regulación, efecto Ferranti y comparación con la potencia natural (SIL);
 - **medir α y β** sobre la simulación y compararlos con la teoría;
 - **exportar** la animación en video y las formas de onda en CSV.
@@ -44,6 +44,12 @@ La tensión en cada punto es la suma de una onda que viaja hacia la carga (**inc
 En régimen senoidal, el perfil |V(x)| muestra la incidente, la reflejada y la total que resulta de combinarlas:
 
 ![Perfil de tensión con onda incidente y reflejada](docs/perfil-ondas.png)
+
+Con el selector **Ver**, cada gráfico muestra lo que se quiera estudiar: la total, la incidente y la reflejada juntas, solo la total, la incidente y la reflejada sin la total, o cada una sola. Cada vista tiene su propia escala y, en régimen, su propia envolvente ±|V±(x)|.
+
+![Incidente y reflejada sin la tensión total](docs/sin-total.png)
+
+![Solo la onda reflejada: el pulso que vuelve desde la carga abierta](docs/solo-reflejada.png)
 
 ## Cómo funciona
 
@@ -134,7 +140,7 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 - set line parameters with selectable units;
 - define the load in MVA and power factor;
 - choose a 50/60 Hz sine (with the voltage specified at the sending or receiving end), a square wave or a pulse;
-- watch waves travel and reflect, with the **incident and reflected waves** shown separately;
+- watch waves travel and reflect, with the **incident and reflected waves** shown together, one at a time, or with the total;
 - get steady-state tables, losses, regulation and the Ferranti effect;
 - measure the propagation constant α and β;
 - export videos.
