@@ -24,7 +24,7 @@ Una página web gratuita, pensada como material didáctico, donde cualquiera pue
 - **definir la carga:** por MVA y factor de potencia, por impedancia, o en circuito abierto, cortocircuito o adaptada;
 - **elegir la fuente:** senoidal a 50 o 60 Hz, con la tensión fijada en el envío o en la carga, onda cuadrada o pulso;
 - **ver la onda viajar y reflejarse** a lo largo de la línea, en tiempo real, con la solución analítica superpuesta;
-- **separar la onda incidente y la reflejada:** en la animación y en el perfil |V(x)| se ve qué parte de la tensión viaja hacia la carga y qué parte vuelve hacia la fuente, juntas, cada una sola o junto con la total;
+- **separar la onda incidente y la reflejada**, de tensión y de corriente: en la animación, en el perfil |V(x)| y en las formas de onda de los extremos se ve qué parte viaja hacia la carga y qué parte vuelve hacia la fuente, juntas, cada una sola o junto con la total;
 - **obtener los resultados de régimen:** tabla por fase y trifásica, pérdidas, rendimiento, regulación, efecto Ferranti y comparación con la potencia natural (SIL);
 - **medir α y β** sobre la simulación y compararlos con la teoría;
 - **exportar** la animación en video y las formas de onda en CSV.
@@ -50,6 +50,14 @@ Con el selector **Ver**, cada gráfico muestra lo que se quiera estudiar: la tot
 ![Incidente y reflejada sin la tensión total](docs/sin-total.png)
 
 ![Solo la onda reflejada: el pulso que vuelve desde la carga abierta](docs/solo-reflejada.png)
+
+La corriente también se separa: i⁺ = v⁺/Zc e i⁻ = −v⁻/Zc. En la carga abierta la corriente total es cero porque la incidente y la reflejada se cancelan, pero cada una por separado se ve:
+
+![Tensión y corriente: total, incidente y reflejada](docs/corriente-ondas.png)
+
+Las formas de onda en los extremos tienen el mismo selector: tensión incidente y reflejada en el envío (punteada) y en la carga (llena), y corriente incidente y reflejada en la carga. Acá se ve el pulso ir y volver varias veces, invirtiéndose en la fuente (Rs = 0):
+
+![Formas de onda en los extremos: incidente y reflejada](docs/extremos-ondas.png)
 
 ## Cómo funciona
 
@@ -84,6 +92,7 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Pulso con carga R-L y onda cuadrada con carga R-C | — | error L2 < 0,06 % |
 | Reflexión en carga abierta, corto y adaptada | Γ = +1, −1, 0 | +1,000 · 0 · 0,000 |
 | Incidente + reflejada = total | exacta | error < 10⁻¹⁴ |
+| Corriente: i⁺ = v⁺/Z₀, i⁻ = −v⁻/Z₀; en vacío i⁺ = −i⁻ | exacta | error < 10⁻¹⁵ |
 | Onda reflejada con carga adaptada (FDTD) | 0 | < 0,1 % del pulso |
 | α y β a 50 y 60 Hz | — | error < 0,01 % |
 | α(f) y β(f) de 10 Hz a 170 kHz | — | error mediano < 0,001 % |
@@ -140,7 +149,7 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 - set line parameters with selectable units;
 - define the load in MVA and power factor;
 - choose a 50/60 Hz sine (with the voltage specified at the sending or receiving end), a square wave or a pulse;
-- watch waves travel and reflect, with the **incident and reflected waves** shown together, one at a time, or with the total;
+- watch waves travel and reflect, with the **incident and reflected waves** (voltage and current, along the line and at both ends) shown together, one at a time, or with the total;
 - get steady-state tables, losses, regulation and the Ferranti effect;
 - measure the propagation constant α and β;
 - export videos.
