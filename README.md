@@ -26,6 +26,7 @@ Una página web gratuita, pensada como material didáctico, donde cualquiera pue
 - **ver la onda viajar y reflejarse** a lo largo de la línea, en tiempo real, con la solución analítica superpuesta;
 - **separar la onda incidente y la reflejada**, de tensión y de corriente: en la animación, en el perfil |V(x)| y en las formas de onda de los extremos se ve qué parte viaja hacia la carga y qué parte vuelve hacia la fuente, juntas, cada una sola o junto con la total;
 - **obtener los resultados de régimen:** tabla por fase y trifásica, pérdidas, rendimiento, regulación, efecto Ferranti y comparación con la potencia natural (SIL);
+- **simular un rayo** que cae sobre la línea: corriente, forma de onda (1,2/50, 8/20 o 10/350 µs), punto de impacto e impedancia del canal elegibles;
 - **medir α y β** sobre la simulación y compararlos con la teoría;
 - **exportar** en video la animación a lo largo de la línea y la de los últimos 2 ciclos en los extremos, y las formas de onda en CSV.
 
@@ -63,6 +64,16 @@ Con **Animar últimos 2 ciclos**, las formas de onda de régimen se dibujan de a
 
 ![Animación de los últimos 2 ciclos: tensión y corriente incidente y reflejada](docs/ultimos-2-ciclos.gif)
 
+### ⚡ Rayo sobre la línea
+
+Una sección especial simula una descarga atmosférica directa sobre el conductor. La corriente del rayo se divide en dos ondas de tensión V = I·(Z₀/2 ∥ Z_canal) que viajan hacia cada extremo y se reflejan según lo que haya en cada uno: en la barra vuelven invertidas (Γ = −1), en un extremo abierto o un transformador casi se duplican. Se elige la corriente, la forma de onda normalizada, el punto de impacto y la impedancia del canal del rayo, y se ven la total, la incidente y la reflejada, con animación y video.
+
+<p align="center"><img src="docs/rayo-seccion.png" alt="Sección del rayo" width="300"></p>
+
+![Rayo de 10 kA a mitad de una línea de 100 km: onda incidente y reflejada](docs/rayo.gif)
+
+![Rayo: tensión y corriente en el punto de impacto y en los extremos](docs/rayo-extremos.png)
+
 ## Cómo funciona
 
 ```mermaid
@@ -80,6 +91,7 @@ flowchart LR
 - **FDTD:** la línea se discretiza en una grilla de Yee 1D (tensión en los nodos, corriente a media celda, salto de rana) con paso Δt = Δx/v. En x = 0 hay un generador de Thevenin y en x = ℓ una carga concentrada R, R-L o R-C, integrada con la regla trapezoidal.
 - **Analítica:** solución exacta de línea larga en el dominio de Laplace, con todas las reflexiones múltiples. Para la senoidal se resuelve con fasores; para pulsos y ondas cuadradas se vuelve al tiempo con una **transformada de Laplace numérica** (s = σ + jω y FFT).
 - **Onda incidente y reflejada:** en senoidal se separan con la solución exacta, V(x) = A·e^(−γx) + A·Γ_L·e^(−γ(2ℓ−x)), con Zc complejo. En pulsos y ondas cuadradas se usa v± = (v ± Z₀·i)/2 sobre la grilla del FDTD, con la corriente promediada al mismo instante que la tensión.
+- **Rayo:** el FDTD agrega la corriente del rayo y la conductancia del canal en la ecuación del nodo de impacto. La solución exacta trata el rayo como una fuente de corriente en x₀ que ve Z_izq ∥ Z_der ∥ Z_canal, con las reflexiones en los dos extremos, y vuelve al tiempo con la misma Laplace numérica.
 - **α y β desde la simulación:** la línea se carga con su propia Zc y se ajusta V(x) = A·e^(−γx) + B·e^(+γx) con Levenberg-Marquardt. En banda ancha, un pulso registrado en dos puntos da H(f) = e^(−γΔx).
 
 ![Propagación: α y β medidos con FDTD contra la teoría](docs/propagacion.png)
@@ -98,6 +110,9 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Incidente + reflejada = total | exacta | error < 10⁻¹⁴ |
 | Corriente: i⁺ = v⁺/Z₀, i⁻ = −v⁻/Z₀; en vacío i⁺ = −i⁻ | exacta | error < 10⁻¹⁵ |
 | Onda reflejada con carga adaptada (FDTD) | 0 | < 0,1 % del pulso |
+| Rayo de 10 kA en el medio, canal ideal: V = I·Z₀/2 | 1327,3 kV | 1327,3 kV |
+| Rayo con canal de 1000 Ω: V = I·(Z₀/2 ∥ Z_canal) | 1171,8 kV | 1171,8 kV |
+| Rayo: FDTD contra la solución exacta | — | error L2 < 0,2 % |
 | α y β a 50 y 60 Hz | — | error < 0,01 % |
 | α(f) y β(f) de 10 Hz a 170 kHz | — | error mediano < 0,001 % |
 
@@ -151,6 +166,7 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 
 **Users can:**
 - set line parameters with selectable units;
+- simulate a **lightning stroke** on the line (current, 1.2/50, 8/20 or 10/350 µs waveform, strike point and channel impedance);
 - define the load in MVA and power factor;
 - choose a 50/60 Hz sine (with the voltage specified at the sending or receiving end), a square wave or a pulse;
 - watch waves travel and reflect, with the **incident and reflected waves** (voltage and current, along the line and at both ends) shown together, one at a time, or with the total;
