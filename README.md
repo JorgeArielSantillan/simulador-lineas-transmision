@@ -20,7 +20,7 @@ En Sistemas Eléctricos de Potencia, conceptos como las ondas viajeras, la refle
 
 Una página web gratuita, pensada como material didáctico, donde cualquiera puede:
 
-- **definir la línea:** R, L, G, C y longitud, con unidades seleccionables;
+- **definir la línea:** R, L, G, C y longitud, con unidades seleccionables, y elegir si **R es constante o varía con la frecuencia** (efecto pelicular) para ver su influencia en los transitorios;
 - **definir la carga:** por MVA y factor de potencia, por impedancia, o en circuito abierto, cortocircuito o adaptada;
 - **elegir la fuente:** senoidal a 50 o 60 Hz, con la tensión fijada en el envío o en la carga, onda cuadrada o pulso;
 - **ver la onda viajar y reflejarse** a lo largo de la línea, en tiempo real, con la solución analítica superpuesta;
@@ -91,6 +91,7 @@ flowchart LR
 - **FDTD:** la línea se discretiza en una grilla de Yee 1D (tensión en los nodos, corriente a media celda, salto de rana) con paso Δt = Δx/v. En x = 0 hay un generador de Thevenin y en x = ℓ una carga concentrada R, R-L o R-C, integrada con la regla trapezoidal.
 - **Analítica:** solución exacta de línea larga en el dominio de Laplace, con todas las reflexiones múltiples. Para la senoidal se resuelve con fasores; para pulsos y ondas cuadradas se vuelve al tiempo con una **transformada de Laplace numérica** (s = σ + jω y FFT).
 - **Onda incidente y reflejada:** en senoidal se separan con la solución exacta, V(x) = A·e^(−γx) + A·Γ_L·e^(−γ(2ℓ−x)), con Zc complejo. En pulsos y ondas cuadradas se usa v± = (v ± Z₀·i)/2 sobre la grilla del FDTD, con la corriente promediada al mismo instante que la tensión.
+- **Resistencia variable con la frecuencia:** con efecto pelicular, la impedancia serie es R·√(1 + jf/f_c). Se aproxima con 16 ramas R∥L pasivas (error < 0,04 % hasta 10 MHz) que el FDTD integra con la regla trapezoidal; la solución exacta usa el mismo modelo, así que la comparación sigue siendo exacta.
 - **Rayo:** el FDTD agrega la corriente del rayo y la conductancia del canal en la ecuación del nodo de impacto. La solución exacta trata el rayo como una fuente de corriente en x₀ que ve Z_izq ∥ Z_der ∥ Z_canal, con las reflexiones en los dos extremos, y vuelve al tiempo con la misma Laplace numérica.
 - **α y β desde la simulación:** la línea se carga con su propia Zc y se ajusta V(x) = A·e^(−γx) + B·e^(+γx) con Levenberg-Marquardt. En banda ancha, un pulso registrado en dos puntos da H(f) = e^(−γΔx).
 
@@ -113,6 +114,7 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Rayo de 10 kA en el medio, canal ideal: V = I·Z₀/2 | 1327,3 kV | 1327,3 kV |
 | Rayo con canal de 1000 Ω: V = I·(Z₀/2 ∥ Z_canal) | 1171,8 kV | 1171,8 kV |
 | Rayo: FDTD contra la solución exacta | — | error L2 < 0,2 % |
+| R(f): FDTD contra la solución exacta (pulso, cuadrada, rayo) | — | error L2 < 0,6 % |
 | α y β a 50 y 60 Hz | — | error < 0,01 % |
 | α(f) y β(f) de 10 Hz a 170 kHz | — | error mediano < 0,001 % |
 
@@ -165,7 +167,7 @@ Detalles en [`LICENSE`](LICENSE).
 An interactive, free web simulator of the **telegrapher's equations**, built as teaching material for Electric Power Systems courses. It solves the line with **FDTD** in the browser and checks every result against the **exact long-line analytical solution** (phasors and numerical inverse Laplace transform).
 
 **Users can:**
-- set line parameters with selectable units;
+- set line parameters with selectable units, with **constant or frequency-dependent resistance** (skin effect);
 - simulate a **lightning stroke** on the line (current, 1.2/50, 8/20 or 10/350 µs waveform, strike point and channel impedance);
 - define the load in MVA and power factor;
 - choose a 50/60 Hz sine (with the voltage specified at the sending or receiving end), a square wave or a pulse;
