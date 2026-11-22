@@ -74,6 +74,20 @@ Una sección especial simula una descarga atmosférica directa sobre el conducto
 
 ![Rayo: tensión y corriente en el punto de impacto y en los extremos](docs/rayo-extremos.png)
 
+### ⇄ TLM: un tercer método para comparar
+
+Una solapa opcional resuelve el mismo problema con **TLM 1D** (Transmission-Line Modeling), siguiendo el capítulo 3 de [1]. TLM parte la línea en tramos cortos que son, a su vez, pequeñas líneas de transmisión: las variables no son V e I, sino pulsos de tensión que viajan, se dispersan en cada nodo (teorema de Millman con los equivalentes de Thevenin 2·Vⁱ y Z₀) y llegan a los vecinos en el paso siguiente. Por eso la onda incidente y la reflejada no se calculan aparte: son las variables del propio método.
+
+La página compara los tres métodos (analítica exacta, FDTD y TLM) con una tabla de errores y tiempos, gráficos de la diferencia con la solución exacta y las formas de onda de TLM con su animación de los últimos 2 ciclos.
+
+<p align="center"><img src="docs/tlm-seccion.png" alt="Solapa TLM con la teoría, el esquema del nodo y la referencia" width="760"></p>
+
+![Comparación de los tres métodos con una onda cuadrada](docs/tlm-comparacion.png)
+
+![Formas de onda de TLM: total, incidente y reflejada en los dos extremos](docs/tlm-ondas.png)
+
+**Un resultado interesante:** en una dimensión, con el paso de tiempo «mágico» Δt = Δx/u, FDTD y TLM son el mismo algoritmo escrito de dos formas. Sin pérdidas coinciden hasta la precisión de la computadora (10⁻¹² %); con pérdidas difieren en ~10⁻⁴ %, porque cada uno incluye R y G a su manera. Donde TLM gana es en la corriente: la obtiene en el mismo instante que la tensión, mientras que el FDTD la calcula medio paso corrida (en una onda cuadrada, error de 0,35 % contra 0,95 %).
+
 ## Cómo funciona
 
 ```mermaid
@@ -86,6 +100,8 @@ flowchart LR
     F --> AN["Animación v(x,t) e i(x,t)"]
     F --> P["Medición de α y β"]
     A --> P
+    U -. opcional .-> T["TLM 1D [1]<br/>pulsos incidentes y reflejados"]
+    T --> C
 ```
 
 - **FDTD:** la línea se discretiza en una grilla de Yee 1D (tensión en los nodos, corriente a media celda, salto de rana) con paso Δt = Δx/v. En x = 0 hay un generador de Thevenin y en x = ℓ una carga concentrada R, R-L o R-C, integrada con la regla trapezoidal.
@@ -93,6 +109,7 @@ flowchart LR
 - **Onda incidente y reflejada:** en senoidal se separan con la solución exacta, V(x) = A·e^(−γx) + A·Γ_L·e^(−γ(2ℓ−x)), con Zc complejo. En pulsos y ondas cuadradas se usa v± = (v ± Z₀·i)/2 sobre la grilla del FDTD, con la corriente promediada al mismo instante que la tensión.
 - **Resistencia variable con la frecuencia:** con efecto pelicular, la parte resistiva crece como √(1 + jf/f_c). Como R, L, G y C son los datos de la línea a 50/60 Hz, el modelo se calibra en esa frecuencia: ahí R y L valen exactamente lo ingresado y el régimen permanente da lo mismo que con R constante; solo cambian los transitorios rápidos. Se aproxima con 16 ramas R∥L pasivas (error < 0,04 % hasta 10 MHz) que el FDTD integra con la regla trapezoidal; la solución exacta usa el mismo modelo.
 - **Rayo:** el FDTD agrega la corriente del rayo y la conductancia del canal en la ecuación del nodo de impacto. La solución exacta trata el rayo como una fuente de corriente en x₀ que ve Z_izq ∥ Z_der ∥ Z_canal, con las reflexiones en los dos extremos, y vuelve al tiempo con la misma Laplace numérica.
+- **TLM (opcional):** la línea es una cascada de tramos de impedancia Z₀ = √(L/C) y tránsito Δt. En cada paso, dispersión en los nodos (Millman, ec. 3.20 de [1]), pulsos reflejados Vʳ = V − Vⁱ (3.21) y conexión con los vecinos (3.22, 3.23). La fuente con Rs sigue (3.24, 3.25); la L de la carga es un tramo en cortocircuito Z = 2L/Δt (3.17, 3.27) y la C un tramo abierto Z = Δt/2C (3.15, 3.16). Las pérdidas R·Δx y G·Δx entran en el mismo Millman. No cubre el rayo ni la R variable con la frecuencia.
 - **α y β desde la simulación:** la línea se carga con su propia Zc y se ajusta V(x) = A·e^(−γx) + B·e^(+γx) con Levenberg-Marquardt. En banda ancha, un pulso registrado en dos puntos da H(f) = e^(−γΔx).
 
 ![Propagación: α y β medidos con FDTD contra la teoría](docs/propagacion.png)
@@ -116,8 +133,15 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Rayo: FDTD contra la solución exacta | — | error L2 < 0,2 % |
 | R(f): FDTD contra la solución exacta (pulso, cuadrada, rayo) | — | error L2 < 0,6 % |
 | R(f): caso de 400 km a 50 Hz, igual que con R constante | 479,27 kV · 13,58° · 11,71 MW | idéntico |
+| TLM: caso de 400 km (fp 1, 0,8 inductiva y 0,8 capacitiva) | 479,27 kV · 13,58° · 11,705 MW | idéntico (error < 0,05 ppm) |
+| TLM: incidente y reflejada contra la solución exacta (onda cuadrada, carga R-C) | — | error L2 < 1 % |
+| TLM contra FDTD sin pérdidas (mismo Δx y Δt) | — | iguales hasta 10⁻¹² % |
 | α y β a 50 y 60 Hz | — | error < 0,01 % |
 | α(f) y β(f) de 10 Hz a 170 kHz | — | error mediano < 0,001 % |
+
+## Referencias
+
+[1] C. Christopoulos, *The Transmission-Line Modeling (TLM) Method in Electromagnetics* (Synthesis Lectures on Computational Electromagnetics). Cham, Switzerland: Springer, 2006, ch. 3, pp. 13–25, doi: [10.1007/978-3-031-01691-2](https://doi.org/10.1007/978-3-031-01691-2).
 
 ## Decisiones técnicas
 
@@ -169,6 +193,7 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 
 **Users can:**
 - set line parameters with selectable units, with **constant or frequency-dependent resistance** (skin effect);
+- compare three methods, **exact analytical, FDTD and TLM** (Transmission-Line Modeling, following [1]), with error tables and TLM waveform animations;
 - simulate a **lightning stroke** on the line (current, 1.2/50, 8/20 or 10/350 µs waveform, strike point and channel impedance);
 - define the load in MVA and power factor;
 - choose a 50/60 Hz sine (with the voltage specified at the sending or receiving end), a square wave or a pulse;
@@ -180,6 +205,8 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 It is available in Spanish and English and needs no server.
 
 **Validation:** Ferranti ratio 2.059 for a 1000 km, 500 kV line; sending-end voltage 479.27 kV for a 400 km line delivering 500 MVA; transient L2 errors below 0.06%; α and β within 0.01%.
+
+**Reference:** [1] C. Christopoulos, *The Transmission-Line Modeling (TLM) Method in Electromagnetics* (Synthesis Lectures on Computational Electromagnetics). Cham, Switzerland: Springer, 2006, ch. 3, pp. 13–25, doi: [10.1007/978-3-031-01691-2](https://doi.org/10.1007/978-3-031-01691-2).
 
 **Source code** is private and available on request for hiring processes.
 
