@@ -133,6 +133,7 @@ Cada número que muestra la página se compara con una solución exacta, y hay u
 | Rayo: FDTD contra la solución exacta | — | error L2 < 0,2 % |
 | R(f): FDTD contra la solución exacta (pulso, cuadrada, rayo) | — | error L2 < 0,6 % |
 | R(f): caso de 400 km a 50 Hz, igual que con R constante | 479,27 kV · 13,58° · 11,71 MW | idéntico |
+| **20 líneas aleatorias** (MT, AT, EAT y cables, 10 a 494 km, cargas inductivas y capacitivas): referencia ABCD independiente | V_s, δ, I_s, pérdidas, regulación | analítica < 10⁻¹⁰ % · FDTD < 0,012 % · TLM < 0,001 % |
 | TLM: caso de 400 km (fp 1, 0,8 inductiva y 0,8 capacitiva) | 479,27 kV · 13,58° · 11,705 MW | idéntico (error < 0,05 ppm) |
 | TLM: incidente y reflejada contra la solución exacta (onda cuadrada, carga R-C) | — | error L2 < 1 % |
 | TLM contra FDTD sin pérdidas (mismo Δx y Δt) | — | iguales hasta 10⁻¹² % |
@@ -204,7 +205,7 @@ An interactive, free web simulator of the **telegrapher's equations**, built as 
 
 It is available in Spanish and English and needs no server.
 
-**Validation:** Ferranti ratio 2.059 for a 1000 km, 500 kV line; sending-end voltage 479.27 kV for a 400 km line delivering 500 MVA; transient L2 errors below 0.06%; α and β within 0.01%.
+**Validation:** 20 random lines (MV, HV, EHV and cables, 10–494 km) against an independent ABCD solution: analytical < 10⁻¹⁰ %, FDTD < 0.012 %, TLM < 0.001 %; Ferranti ratio 2.059 for a 1000 km, 500 kV line; sending-end voltage 479.27 kV for a 400 km line delivering 500 MVA; transient L2 errors below 0.06%; α and β within 0.01%.
 
 **Reference:** [1] C. Christopoulos, *The Transmission-Line Modeling (TLM) Method in Electromagnetics* (Synthesis Lectures on Computational Electromagnetics). Cham, Switzerland: Springer, 2006, ch. 3, pp. 13–25, doi: [10.1007/978-3-031-01691-2](https://doi.org/10.1007/978-3-031-01691-2).
 
